@@ -14,26 +14,17 @@
         <div class="vs-settings__header">
           Files
         </div>
-        <p
-          v-for="(item,index) in filesData"
-          :key="index"
-          :class="{ 'active': index === 0 }"
-          @click="$emit('chooseFile', item)"
-          class="vs-settings__item"
-        >
-          <img
-              class="vs-settings__file"
-              src="https://cdn0.iconfinder.com/data/icons/file-format-3d-graphics-flat-filled/64/file_document_format_76-512.png" alt="">
-          {{ item.name1 }}
-        </p>
+       <vs-files-list :allFiles="filesList" v-on:selectedFile="chooseFile"/>
     </div>
   </div>
 
 </template>
 
 <script>
+import VsFilesList from "@/utils/vs-files-list";
 export default {
   name: "vs-webeditor-aside",
+  components: {VsFilesList},
   props: {
     filesList: {
       type: Array,
@@ -41,7 +32,7 @@ export default {
   },
   data() {
     return {
-      filesData: [...this.filesList],
+
       navs: ['Files', 'Eslint', 'Git']
     }
   },
@@ -50,6 +41,12 @@ export default {
       return i === 0 ? 'active' : ''
     }
   },
+  methods: {
+    chooseFile (val) {
+      this.$emit('selectedFile', val)
+    }
+
+  }
 }
 </script>
 

@@ -3,10 +3,11 @@
     <vs-webeditor
         :openTabs="openFiles"
         :activeFile="activeTab"
+        v-on:closeTab="closeTab"
         class="vs-main-panel"/>
     <vs-webeditor-aside
         :filesList="allFiles"
-        v-on:chooseFile="reciveFileData"
+        v-on:selectedFile="reciveFileData"
         class="vs-aside-panel"/>
   </div>
 </template>
@@ -22,10 +23,15 @@ export default {
   },
   data() {
     return {
-      allFiles: [{name1: 'Index.vue', name2: 'asdas'}, {name1: 'v-form.vue', name2: 'asdas'}],
-      openFiles: [{name1: 'Index.vue', name2: 'asdas'}],
-      activeTab: {name1: 'Index.vue', name2: 'asdas'}
+      allFiles: [{name1: 'Index.vue', name2: 'asdas', id: 1}, {name1: 'vs-form.vue', name2: 'asdas', id:2}, {name1: 'vs-playground.vue', name2: 'asdas', id:3}],
+      openFiles: [],
+      activeTab: {},
     }
+  },
+  mounted() {
+    //temporary
+    this.openFiles = [this.allFiles[0]]
+    this.activeTab= this.allFiles[0]
   },
   methods: {
     reciveFileData (value) {
@@ -34,6 +40,9 @@ export default {
       console.log(this.openFiles, this.activeTab)
 
 
+    },
+    closeTab(val){
+      this.openFiles = this.openFiles.filter(el=> el.id !== val.id)
     }
   }
 

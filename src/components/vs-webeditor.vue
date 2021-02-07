@@ -1,6 +1,9 @@
 <template>
   <div class="vs-work-area">
-    <div class="vs-navs__block">
+    <vs-browser-tabs
+        v-on:closeTab="closeTab"
+        :activeTab="activeFile" :allTabs="openTabs"/>
+<!--    <div class="vs-navs__block">
   <div
           v-for="(item, index) in allTabs"
           :key="index"
@@ -15,7 +18,7 @@
                 class="vs-navs__close">X</span>
       </div>
 
-    </div>
+    </div>-->
     <div class="vs-work-area__body">
       <p>{{ activeFile }}</p>
       <vs-resulting-form/>
@@ -26,40 +29,42 @@
 
 <script>
 import VsResultingForm from "@/components/vs-resulting-form";
+import VsBrowserTabs from "@/utils/vs-browser-tabs";
 export default {
 name: "vs-webeditor",
-  components: {VsResultingForm},
+  components: {VsBrowserTabs, VsResultingForm},
   props:{
     openTabs:{
       type: Array
     },
     activeFile: {
       type: Object
-    }
+    },
+    activeTab: Object
   },
   data() {
     return {
-      activeTab: this.activeFile,
-      allTabs: [...this.openTabs]
+      //activeTab: 0,
+      tabs: []
     }
   },
   watch : {
     openTabs: {
       immediate: true,
       handler() {
-        this.allTabs = [...this.openTabs]
+
       }
     },
     activeFile: {
       immediate: true,
       handler() {
-        this.activeTab = this.activeFile
+
       }
     }
   },
   methods: {
-    closeTab () {
-      console.log('removeTab')
+    closeTab (val) {
+      this.$emit('closeTab', val)
     }
   }
 }
@@ -71,24 +76,5 @@ name: "vs-webeditor",
     padding: 30px;
 
   }
-  .vs-navs{
-    align-items: center;
-    &.active{
-     font-style: italic;
-      font-size: 12px;
-      position: relative;
-      &:after{
-        position: absolute;
-        bottom: -1px;
-        content: '';
-        width: 100%;
-        right: 0;
-        height: 2px;
-        background: aquamarine;
-      }
-    }
-    &__close{
-      font-style: normal;
-    }
-  }
+
 </style>
